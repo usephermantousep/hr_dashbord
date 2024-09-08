@@ -18,6 +18,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('employees')
                 ->onDelete('restrict');
+            $table->date('period');
             $table->float('total');
             $table->timestamps();
         });

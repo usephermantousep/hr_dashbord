@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Helper\OptionSelectHelpers;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -10,14 +11,6 @@ use Faker;
 
 class EmployeeSeeder extends Seeder
 {
-    private static $genders = [
-        'Laki-Laki',
-        'Perempuan',
-    ];
-    private static $statuses = [
-        'KONTRAK',
-        'TETAP',
-    ];
     /**
      * Run the database seeds.
      */
@@ -33,8 +26,8 @@ class EmployeeSeeder extends Seeder
             $fake_department = $faker->numberBetween(1, 26);
             $fake_job_position = $faker->numberBetween(1, 7);
             $fake_index = $faker->numberBetween(0, 1);
-            $gender = self::$genders[$fake_index];
-            $status = self::$statuses[$fake_index];
+            $gender = OptionSelectHelpers::$genders[$fake_index];
+            $status = OptionSelectHelpers::$employeeStatuses[$fake_index];
             $join_date = $faker->dateTimeBetween('-5 years');
             $leaving_date = Carbon::parse($join_date->getTimestamp())
                 ->diffInYears(Carbon::now()) > 3 ? Carbon::now() : null;
