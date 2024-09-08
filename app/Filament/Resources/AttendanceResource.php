@@ -31,9 +31,12 @@ class AttendanceResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('date')
-                    ->date('d-M-y'),
-                TextColumn::make('employee.name'),
-                TextColumn::make('attendance.name'),
+                    ->date('d-M-y')
+                    ->label(__('global.date')),
+                TextColumn::make('employee.name')
+                    ->label(__('global.name')),
+                TextColumn::make('attendanceStatus.name')
+                    ->label(__('global.attendance_status')),
             ])
             ->filters([
                 //
@@ -41,12 +44,9 @@ class AttendanceResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

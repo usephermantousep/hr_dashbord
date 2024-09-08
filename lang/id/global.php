@@ -1,13 +1,14 @@
 <?php
 
 return [
-    "name" => "Name",
+    "name" => "Nama",
     "branch" => "Cabang",
     "attendance" => "Kehadiran",
     "attendance_status" => "Status Kehadiran",
     "department" => "Departement",
-    "employee" => "Karyawang",
+    "employee" => "Karyawan",
     "job_position" => "Posisi Pekerjaan",
     "payroll" => "Penggajian",
     "training" => "Pelatihan",
+    "date" => "Tanggal",
 ];

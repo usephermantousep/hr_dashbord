@@ -10,4 +10,5 @@ return [
     "job_position" => "Job Position",
     "payroll" => "Payroll",
     "training" => "Training",
+    "date" => "Date",
 ];
