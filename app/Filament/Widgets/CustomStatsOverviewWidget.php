@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Employee;
+use App\Models\Training;
 use App\Models\Vacant;
 use Carbon\Carbon;
 use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget as BaseWidget;
@@ -32,6 +33,9 @@ class CustomStatsOverviewWidget extends BaseWidget
         })->count();
         $vacant_sum = Vacant::all('allocated_amount')->sum('allocated_amount');
         $resign_employee = $employee->where('leaving_date', '!=', null)->count();
+        $trainings = Training::all('id', 'is_done');
+        $training_counts = $trainings->count();
+        $done_trainings = $trainings->where('is_done', true)->count();
         return [
             Stat::make('Total ' . __('global.employee'), (string) $employee_count)
                 ->icon('heroicon-o-user')
@@ -55,6 +59,12 @@ class CustomStatsOverviewWidget extends BaseWidget
                 ->icon('heroicon-o-user')
                 ->iconColor('danger'),
             Stat::make('Karyawan Vacant', (string) $vacant_sum)
+                ->icon('heroicon-o-user')
+                ->iconColor('success'),
+            Stat::make('Jumlah Kebutuhan Training', (string) $training_counts)
+                ->icon('heroicon-o-user')
+                ->iconColor('danger'),
+            Stat::make('Jumlah Pelaksanaan Training', (string) $done_trainings)
                 ->icon('heroicon-o-user')
                 ->iconColor('success'),
         ];

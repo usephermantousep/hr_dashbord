@@ -20,6 +20,7 @@ class TrainingSeeder extends Seeder
             $branches[] = [
                 'name' => 'Training ' . $letter,
                 'branch_id' => $index,
+                "is_done" => $index % 2
             ];
             $index++;
         }

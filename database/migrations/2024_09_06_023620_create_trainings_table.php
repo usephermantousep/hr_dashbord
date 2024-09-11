@@ -19,6 +19,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('branches')
                 ->onDelete('restrict');
+            $table->boolean('is_done')
+                ->default(false);
             $table->timestamps();
         });
     }
