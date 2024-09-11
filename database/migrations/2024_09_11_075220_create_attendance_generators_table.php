@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('attendance_generators', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->date('generate_at')
+                ->nullable();
+            $table->boolean('is_generated')
+                ->default(false);
+            $table->unsignedBigInteger('create_by');
+            $table->foreign('create_by')
+                ->references('id')
+                ->on('users')
+                ->onDelete('restrict');
+            $table->unsignedBigInteger('generate_by');
+            $table->foreign('generate_by')
+                ->references('id')
+                ->on('users')
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             PayrollSeeder::class,
             TrainingSeeder::class,
             TrainingEmployeeSeeder::class,
+            AttendanceGeneratorSeeder::class,
+            AttendanceGeneratorEmployeeSeeder::class,
         ]);
     }
 }
