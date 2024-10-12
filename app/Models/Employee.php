@@ -14,4 +14,9 @@ class Employee extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function attendanceGeneratorEmployees(): HasMany
+    {
+        return $this->hasMany(AttendanceGeneratorEmployee::class);
+    }
 }

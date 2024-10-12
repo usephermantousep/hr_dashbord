@@ -14,17 +14,17 @@ class AttendanceGeneratorEmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        $employees = Employee::where('branch_id', 1)->get();
+        // $employees = Employee::where('branch_id', 1)->get();
 
-        $generatorEmployees = [];
+        // $generatorEmployees = [];
 
-        foreach ($employees as $e) {
-            $generatorEmployees[] = [
-                'employee_id' => $e->id,
-                'attendance_generator_id' => 1,
-                'attendance_status_id' => 1,
-            ];
-        }
-        AttendanceGeneratorEmployee::insert($generatorEmployees);
+        // foreach ($employees as $e) {
+        //     $generatorEmployees[] = [
+        //         'employee_id' => $e->id,
+        //         'attendance_generator_id' => 1,
+        //         'attendance_status_id' => 1,
+        //     ];
+        // }
+        // AttendanceGeneratorEmployee::insert($generatorEmployees);
     }
 }

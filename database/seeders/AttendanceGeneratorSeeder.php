@@ -11,12 +11,5 @@ class AttendanceGeneratorSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
-        AttendanceGenerator::insert([
-            'date' => now(),
-            'generate_by' => 1,
-            'create_by' => 1,
-        ]);
-    }
+    public function run(): void {}
 }
