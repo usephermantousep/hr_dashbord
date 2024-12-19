@@ -30,6 +30,21 @@ class AttendanceGeneratorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.attendance_generator');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.attendance_generator');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.attendance_generator');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -37,18 +52,19 @@ class AttendanceGeneratorResource extends Resource
                 Fieldset::make('Generate Data')
                     ->schema([
                         DatePicker::make('from_date')
-                            ->label('Dari')
+                            ->label(__('global.from_date'))
                             ->native(false)
                             ->date('d-M-Y'),
                         DatePicker::make('to_date')
-                            ->label('Sampai')
+                            ->label(__('global.to_date'))
                             ->native(false)
                             ->date('d-M-Y'),
                         Select::make('attendance_status_id')
                             ->relationship('attendanceStatus', 'name')
-                            ->label('Attendance Status'),
+                            ->label(__('global.attendance_status')),
                         Checkbox::make('is_generated')
-                            ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord)),
+                            ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
+                            ->label(__('global.is_generated')),
                         Select::make('employees')
                             ->options(
                                 Employee::orderBy('name')->get()->pluck('name', 'id')
@@ -56,13 +72,16 @@ class AttendanceGeneratorResource extends Resource
                             ->preload()
                             ->multiple()
                             ->searchable()
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->label(__('global.employee')),
                         Select::make('created_by')
                             ->relationship('createdBy', 'name')
-                            ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord)),
+                            ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
+                            ->label(__('global.created_by')),
                         Select::make('generate_by')
                             ->relationship('generateBy', 'name')
-                            ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord)),
+                            ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
+                            ->label(__('global.generated_by')),
                     ])
                     ->disabled(fn(Get $get) => $get('is_generated')),
 
@@ -73,7 +92,9 @@ class AttendanceGeneratorResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('date')
+                TextColumn::make('from_date')
+                    ->date('d-M-Y'),
+                TextColumn::make('to_date')
                     ->date('d-M-Y'),
                 IconColumn::make('is_generated')
                     ->boolean(),

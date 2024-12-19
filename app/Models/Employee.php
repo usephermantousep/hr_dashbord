@@ -10,6 +10,10 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $guarded = [
+        'id'
+    ];
+
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class);

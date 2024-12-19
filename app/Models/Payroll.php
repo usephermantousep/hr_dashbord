@@ -10,6 +10,10 @@ class Payroll extends Model
 {
     use HasFactory;
 
+    protected $guarded = [
+        'id'
+    ];
+
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
