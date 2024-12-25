@@ -11,6 +11,7 @@ services:
       - .:/var/www/html
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./.env:/var/www/html/.env
+      - ./storage:/var/www/html/storage
     expose:
       - "9000"
     environment:
@@ -22,20 +23,20 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
 
-  db:
-    image: mysql:8.0
-    container_name: laravel_db
-    restart: always
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "3306:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
+#   db:
+#     image: mysql:8.0
+#     container_name: laravel_db
+#     restart: always
+#     environment:
+#       MYSQL_DATABASE: laravel
+#       MYSQL_ROOT_PASSWORD: root
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - dbdata:/var/lib/mysql
 
   nginx:
     image: nginx:latest
@@ -48,5 +49,5 @@ services:
     depends_on:
       - app
 
-volumes:
-  dbdata:
+# volumes:
+#   dbdata:

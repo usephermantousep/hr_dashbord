@@ -41,10 +41,14 @@ COPY . .
 
 # Set permissions for Laravel storage and cache
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
+
+# Install NPM dependencies
+RUN npm install && npm run build
 
 # Expose the PHP-FPM port
 EXPOSE 9000
