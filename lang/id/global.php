@@ -20,5 +20,11 @@ return [
     "attendance_generator" => "Generator Kehadiran",
     "generator_document" => "Dokumen Generator",
     "document_number" => "Nomor Dokumen",
-    "attendance_document_exist" => "Data kehadiran sudah ada untuk karyawan dan dokumen berikut : :datas"
+    "attendance_document_exist" => "Data kehadiran sudah ada untuk karyawan dan dokumen berikut : :datas",
+    "employee_id" => "ID Karyawan",
+    "gender" => "Jenis Kelamin",
+    "join_date" => "Tanggal Masuk",
+    "leaving_date" => "Tanggal Keluar",
+    "period" => "Periode",
+    "is_done" => "Selesai",
 ];

@@ -10,7 +10,7 @@ class AttendanceStatusSeeder extends Seeder
 {
     private static array $statuses = [
         ['name' => 'HADIR'],
-        ['name' => 'TERLAMBAR'],
+        ['name' => 'TERLAMBAT'],
         ['name' => 'CUTI'],
         ['name' => 'SAKIT'],
     ];

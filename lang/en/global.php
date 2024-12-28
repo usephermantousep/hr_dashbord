@@ -20,5 +20,11 @@ return [
     "attendance_generator" => "Attendance Generator",
     "generator_document" => "Generator Document",
     "document_number" => "Document Number",
-    "attendance_document_exist" => "Attendance records already exist for the following employee(s) and document(s) : :datas"
+    "attendance_document_exist" => "Attendance records already exist for the following employee(s) and document(s) : :datas",
+    "employee_id" => "Employee ID",
+    "gender" => "Gender",
+    "join_date" => "Join Date",
+    "leaving_date" => "Leaving Date",
+    "period" => "Period",
+    "is_done" => "Is Done",
 ];

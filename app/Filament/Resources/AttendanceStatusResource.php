@@ -6,6 +6,7 @@ use App\Filament\Resources\AttendanceStatusResource\Pages;
 use App\Filament\Resources\AttendanceStatusResource\RelationManagers;
 use App\Models\AttendanceStatus;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -40,8 +41,13 @@ class AttendanceStatusResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label(__('global.name')),
+                Section::make()
+                    ->schema(
+                        [
+                            TextInput::make('name')
+                                ->label(__('global.name')),
+                        ]
+                    )
             ]);
     }
 

@@ -6,6 +6,7 @@ use App\Filament\Resources\JobPositionResource\Pages;
 use App\Filament\Resources\JobPositionResource\RelationManagers;
 use App\Models\JobPosition;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,12 +22,30 @@ class JobPositionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-c-briefcase';
 
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.job_position');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.job_position');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.job_position');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label(__('global.name')),
+                Section::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('global.name')),
+                    ])
             ]);
     }
 

@@ -109,7 +109,8 @@ class AttendanceGeneratorResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('document_number')
-                    ->label(__('global.document_number')),
+                    ->label(__('global.document_number'))
+                    ->searchable(),
                 TextColumn::make('from_date')
                     ->date('d-M-Y'),
                 TextColumn::make('to_date')

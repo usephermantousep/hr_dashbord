@@ -23,6 +23,21 @@ class BranchResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.branch');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.branch');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.branch');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

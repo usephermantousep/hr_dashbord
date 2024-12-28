@@ -6,6 +6,7 @@ use App\Filament\Resources\DepartmentResource\Pages;
 use App\Filament\Resources\DepartmentResource\RelationManagers;
 use App\Models\Department;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,8 +26,13 @@ class DepartmentResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label(__('global.name')),
+                Section::make()
+                    ->schema(
+                        [
+                            TextInput::make('name')
+                                ->label(__('global.name')),
+                        ]
+                    )
             ]);
     }
 

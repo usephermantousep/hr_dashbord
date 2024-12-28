@@ -6,9 +6,14 @@ use App\Filament\Resources\PayrollResource\Pages;
 use App\Filament\Resources\PayrollResource\RelationManagers;
 use App\Models\Payroll;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,7 +28,22 @@ class PayrollResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Section::make()
+                    ->schema([
+                        Select::make('employee_id')
+                            ->relationship('employee', 'name')
+                            ->label(__('global.employee'))
+                            ->required(),
+                        DatePicker::make('period')
+                            ->native(false)
+                            ->date('M-Y')
+                            ->label(__('global.period'))
+                            ->required(),
+                        TextInput::make('total')
+                            ->numeric()
+                            ->required(),
+                    ])
+                    ->columns(3),
             ]);
     }
 
@@ -31,7 +51,12 @@ class PayrollResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('employee.name')
+                    ->label(__('global.employee'))
+                    ->searchable(),
+                TextColumn::make('period')
+                    ->date('M-Y')
+                    ->label(__('global.period')),
             ])
             ->filters([
                 //
@@ -39,12 +64,9 @@ class PayrollResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

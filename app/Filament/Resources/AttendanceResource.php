@@ -94,12 +94,14 @@ class AttendanceResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('document_number')
-                    ->label(__('global.document_number')),
+                    ->label(__('global.document_number'))
+                    ->searchable(),
                 TextColumn::make('date')
                     ->date('d-M-y')
                     ->label(__('global.date')),
                 TextColumn::make('employee.name')
-                    ->label(__('global.name')),
+                    ->label(__('global.name'))
+                    ->searchable(),
                 TextColumn::make('attendanceStatus.name')
                     ->label(__('global.attendance_status')),
             ])
