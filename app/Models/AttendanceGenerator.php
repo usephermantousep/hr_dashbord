@@ -26,11 +26,17 @@ class AttendanceGenerator extends Model
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'create_by', 'id');
+        return $this->belongsTo(User::class, 'create_by');
     }
+
     public function generateBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'generate_by', 'id');
+        return $this->belongsTo(User::class, 'generate_by');
+    }
+
+    public function generateds()
+    {
+        return $this->hasMany(Attendance::class, 'generate_id');
     }
 
     public function generate(): void
@@ -54,14 +60,14 @@ class AttendanceGenerator extends Model
         if ($existingAttendances->isNotEmpty()) {
             // Format each conflict as "Employee X on Date Y"
             $conflicts = $existingAttendances->map(function ($attendance) {
-                return 'Karyawan : ' . Employee::find($attendance->employee_id)->name . ' Tanggal : ' . $attendance->date;
+                return 'Karyawan : ' . Employee::find($attendance->employee_id)->name . ' Nomer Kehadiran : ' . $attendance->document_number;
             });
 
             // Join the conflicts with commas or new lines (your choice)
             $conflictString = implode(', ', $conflicts->toArray());
 
             // Throw an exception with the formatted string
-            throw new \Exception('Attendance records already exist for the following employee(s) and date(s): ' . $conflictString);
+            throw new \Exception(__('global.attendance_document_exist', ['datas' => $conflictString]));
         }
 
         // If no conflicts, prepare data for batch insert
@@ -74,6 +80,8 @@ class AttendanceGenerator extends Model
                     'attendance_status_id' => $this->attendance_status_id,
                     'created_at' => now(),
                     'updated_at' => now(),
+                    'generate_id' => $this->id,
+                    'document_number' => DocumentNumber::generateAttendanceDocumentNumber()
                 ];
             }
         }

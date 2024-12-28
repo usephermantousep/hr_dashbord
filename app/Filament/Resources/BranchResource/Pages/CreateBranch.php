@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateBranch extends CreateRecord
 {
     protected static string $resource = BranchResource::class;
+    protected static bool $canCreateAnother = false;
 }

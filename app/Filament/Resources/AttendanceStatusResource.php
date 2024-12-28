@@ -19,7 +19,22 @@ class AttendanceStatusResource extends Resource
 {
     protected static ?string $model = AttendanceStatus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-swatch';
+
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.attendance_status');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.attendance_status');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.attendance_status');
+    }
 
     public static function form(Form $form): Form
     {

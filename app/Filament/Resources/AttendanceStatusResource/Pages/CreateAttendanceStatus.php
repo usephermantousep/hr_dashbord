@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAttendanceStatus extends CreateRecord
 {
     protected static string $resource = AttendanceStatusResource::class;
+    protected static bool $canCreateAnother = false;
 }

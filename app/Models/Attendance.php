@@ -23,4 +23,9 @@ class Attendance extends Model
     {
         return $this->belongsTo(AttendanceStatus::class);
     }
+
+    public function generated(): BelongsTo
+    {
+        return $this->belongsTo(AttendanceGenerator::class, 'generate_id');
+    }
 }

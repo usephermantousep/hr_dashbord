@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Helper\OptionSelectHelpers;
+use App\Models\DocumentNumber;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -19,7 +20,7 @@ class EmployeeSeeder extends Seeder
         $faker = Faker\Factory::create('id_ID');
 
         $employees = [];
-        $generates = range(1, 1000);
+        $generates = range(1, 50);
 
         foreach ($generates as $_) {
             $fake_branch = $faker->numberBetween(1, 26);
@@ -32,6 +33,7 @@ class EmployeeSeeder extends Seeder
             $leaving_date = Carbon::parse($join_date->getTimestamp())
                 ->diffInYears(Carbon::now()) > 3 ? Carbon::now() : null;
             $employees[] = [
+                "employee_id" => DocumentNumber::generateEmployeeDocumentNumber($join_date),
                 "name" => $faker->unique()->name($gender === 'Perempuan' ? 'female' : 'male'),
                 "branch_id" => $fake_branch,
                 "department_id" => $fake_department,

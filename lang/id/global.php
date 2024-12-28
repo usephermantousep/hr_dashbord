@@ -18,4 +18,7 @@ return [
     "created_by" => "Dibuat Oleh",
     "generated_by" => "Digenerate Oleh",
     "attendance_generator" => "Generator Kehadiran",
+    "generator_document" => "Dokumen Generator",
+    "document_number" => "Nomor Dokumen",
+    "attendance_document_exist" => "Data kehadiran sudah ada untuk karyawan dan dokumen berikut : :datas"
 ];

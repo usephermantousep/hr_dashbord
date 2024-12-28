@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTraining extends CreateRecord
 {
     protected static string $resource = TrainingResource::class;
+    protected static bool $canCreateAnother = false;
 }
