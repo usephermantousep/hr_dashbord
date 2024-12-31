@@ -14,6 +14,8 @@ class HeadcountTotal extends ChartWidget
     use InteractsWithPageFilters;
     protected static ?string $heading = 'Headcount Total';
     protected static ?string $pollingInterval = null;
+    protected static ?string $maxHeight = '170px';
+    protected static ?string $minHeight = '170px';
 
     protected function getData(): array
     {

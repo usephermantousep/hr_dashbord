@@ -22,10 +22,10 @@ class CustomStatsOverviewWidget extends BaseWidget
         $contract_employee_count = $employee->where('status', 'KONTRAK')
             ->where('leaving_date', '!=', null)
             ->count();
-        $man_employee = $employee->where('gender', 'Laki-Laki')
+        $man_employee = $employee->where('gender', 'Pria')
             ->where('leaving_date', '!=', null)
             ->count();
-        $women_employee = $employee->where('gender', 'Perempuan')
+        $women_employee = $employee->where('gender', 'Wanita')
             ->where('leaving_date', '!=', null)
             ->count();
         $new_employee = $employee->filter(function ($e) {
@@ -46,10 +46,10 @@ class CustomStatsOverviewWidget extends BaseWidget
             Stat::make('Karyawan Kontrak', (string) $contract_employee_count)
                 ->icon('heroicon-o-user')
                 ->iconColor('danger'),
-            Stat::make('Karyawan Laki-Laki', (string) $man_employee)
+            Stat::make('Karyawan Pria', (string) $man_employee)
                 ->icon('heroicon-o-user')
                 ->iconColor('success'),
-            Stat::make('Karyawan Perempuan', (string) $women_employee)
+            Stat::make('Karyawan Wanita', (string) $women_employee)
                 ->icon('heroicon-o-user')
                 ->iconColor('primary'),
             Stat::make('Karyawan Baru', (string) $new_employee)

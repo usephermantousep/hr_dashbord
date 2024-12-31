@@ -26,7 +26,7 @@ class EmployeeSeeder extends Seeder
             $fake_branch = $faker->numberBetween(1, 26);
             $fake_department = $faker->numberBetween(1, 26);
             $fake_job_position = $faker->numberBetween(1, 7);
-            $genders = ['Laki-Laki', 'Perempuan'];
+            $genders = ['Pria', 'Wanita'];
             $fake_index = $faker->numberBetween(0, 1);
             $gender = $genders[$fake_index];
             $join_date = $faker->dateTimeBetween('-5 years');
@@ -34,7 +34,7 @@ class EmployeeSeeder extends Seeder
                 ->diffInYears(Carbon::now()) > 3 ? Carbon::now()->subMonth($faker->numberBetween(1, 6)) : null;
             $employees[] = [
                 "employee_id" => DocumentNumber::generateEmployeeDocumentNumber($join_date),
-                "name" => $faker->unique()->name($gender === 'Perempuan' ? 'female' : 'male'),
+                "name" => $faker->unique()->name($gender === 'Wanita' ? 'female' : 'male'),
                 "branch_id" => $fake_branch,
                 "department_id" => $fake_department,
                 "job_position_id" => $fake_job_position,

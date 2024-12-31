@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Widgets\DepartmentPayroll;
+use App\Filament\Widgets\GenderPie;
 use App\Filament\Widgets\HeadcountTotal;
 use App\Helper\DateHelper;
 use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget;
@@ -39,15 +40,21 @@ class DashboardPage extends Dashboard
             ]);
     }
     public function getColumns(): int|string|array
+
     {
-        return 3;
+        return [
+            'md' => 2,
+            'xl' => 3,
+        ];
     }
+
 
     public function getWidgets(): array
     {
         return [
             // DepartmentPayroll::class,
-            HeadcountTotal::class
+            HeadcountTotal::class,
+            GenderPie::class,
         ];
     }
 }
