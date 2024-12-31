@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class DepartmentPayroll extends BaseWidget
 {
     protected static ?int $sort = 2;
-    protected int | string | array $columnSpan = 'full';
     public function getTableRecordKey(Model $record): string
     {
         return 'department_name';

@@ -12,6 +12,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Pages\Page;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\Resource;
@@ -76,11 +77,18 @@ class EmployeeResource extends Resource
                             ->searchable()
                             ->required()
                             ->label(__('global.job_position')),
-                        Select::make('status')
-                            ->options(OptionSelectHelpers::$employeeStatuses)
+                        Select::make('status_id')
+                            ->relationship('employmentStatus', 'name')
+                            ->preload()
                             ->required()
+                            ->live()
                             ->native(false)
                             ->searchable(),
+                        DatePicker::make('to_date')
+                            ->native(false)
+                            ->date('d-M-Y')
+                            ->hidden(fn(Get $get) => $get('status_id') === 1)
+                            ->nullable(),
                         Select::make('gender')
                             ->options(OptionSelectHelpers::$genders)
                             ->label(__('global.gender'))

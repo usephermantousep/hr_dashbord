@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             JobPositionSeeder::class,
             VacantSeeder::class,
+            EmploymentStatusSeeder::class,
             EmployeeSeeder::class,
             AttendanceStatusSeeder::class,
             AttendanceSeeder::class,

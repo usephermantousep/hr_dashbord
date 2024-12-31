@@ -39,4 +39,9 @@ class Employee extends Model
     {
         return $this->hasMany(AttendanceGeneratorEmployee::class);
     }
+
+    public function employmentStatus(): BelongsTo
+    {
+        return $this->belongsTo(EmploymentStatus::class);
+    }
 }

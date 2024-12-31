@@ -16,23 +16,25 @@ return new class extends Migration
             $table->string('employee_id')
                 ->unique();
             $table->string('name');
-            $table->unsignedBigInteger('branch_id');
-            $table->foreign('branch_id')
+            $table->foreignId('branch_id')
                 ->references('id')
                 ->on('branches')
                 ->onDelete('restrict');
-            $table->unsignedBigInteger('department_id');
-            $table->foreign('department_id')
+            $table->foreignId('department_id')
                 ->references('id')
                 ->on('departments')
                 ->onDelete('restrict');
-            $table->unsignedBigInteger('job_position_id');
-            $table->foreign('job_position_id')
+            $table->foreignId('job_position_id')
                 ->references('id')
                 ->on('job_positions')
                 ->onDelete('restrict');
-            $table->string('status');
+            $table->foreignId('employment_status_id')
+                ->references('id')
+                ->on('employment_statuses')
+                ->onDelete('restrict');
             $table->date('join_date');
+            $table->date('to_date')
+                ->nullable();
             $table->string('gender');
             $table->date('leaving_date')
                 ->nullable();
