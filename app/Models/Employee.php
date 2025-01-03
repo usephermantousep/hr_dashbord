@@ -44,4 +44,19 @@ class Employee extends Model
     {
         return $this->belongsTo(EmploymentStatus::class);
     }
+
+    public function maritalStatus(): BelongsTo
+    {
+        return $this->belongsTo(MaritalStatus::class);
+    }
+
+    public function employmentType(): BelongsTo
+    {
+        return $this->belongsTo(EmploymentType::class);
+    }
+
+    public function trainings(): HasMany
+    {
+        return $this->hasMany(TrainingEmployee::class);
+    }
 }

@@ -14,10 +14,8 @@ class EmploymentStatusSeeder extends Seeder
     public function run(): void
     {
         $employmentStatuses = [
-            'Permanent',
-            'Contract',
-            'Probation',
-            'By Project',
+            'PKWT',
+            'PKWTT'
         ];
 
         foreach ($employmentStatuses as $employmentStatus) {

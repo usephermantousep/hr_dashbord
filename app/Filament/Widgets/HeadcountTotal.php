@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Helper\ValidationHelper;
 use App\Models\Employee;
-use App\Models\EmploymentStatus;
+use App\Models\EmploymentType;
 use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -26,12 +26,12 @@ class HeadcountTotal extends ChartWidget
         $employees = Employee::whereDate('leaving_date', '>=', $endOfMonthFilter)
             ->orWhereNull('leaving_date')
             ->get();
-        $employmentStatuses = EmploymentStatus::all();
+        $employmentTypes = EmploymentType::all();
         $data = $employees
-            ->groupBy('employment_status_id')
-            ->mapWithKeys(function ($group, $employmentStatusId) use ($employmentStatuses) {
-                $employmentStatus = $employmentStatuses->find($employmentStatusId);
-                $statusName = $employmentStatus ? $employmentStatus->name : 'Unknown';
+            ->groupBy('employment_type_id')
+            ->mapWithKeys(function ($group, $employmentTypeId) use ($employmentTypes) {
+                $employmentType = $employmentTypes->find($employmentTypeId);
+                $statusName = $employmentType ? $employmentType->name : 'Unknown';
                 return [$statusName => $group->count()];
             })
             ->toArray();
@@ -55,7 +55,7 @@ class HeadcountTotal extends ChartWidget
                     'barThickness' => 30
                 ],
             ],
-            'labels' => $employmentStatuses->pluck('name'),
+            'labels' => $employmentTypes->pluck('name'),
         ];
     }
 

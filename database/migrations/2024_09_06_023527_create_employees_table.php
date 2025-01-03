@@ -32,10 +32,18 @@ return new class extends Migration
                 ->references('id')
                 ->on('employment_statuses')
                 ->onDelete('restrict');
+            $table->foreignId('employment_type_id')
+                ->references('id')
+                ->on('employment_types')
+                ->onDelete('restrict');
+            $table->foreignId('marital_status_id')
+                ->references('id')
+                ->on('marital_statuses')
+                ->onDelete('restrict');
             $table->date('join_date');
-            $table->date('to_date')
-                ->nullable();
             $table->string('gender');
+            $table->string('religion')
+                ->nullable();
             $table->date('leaving_date')
                 ->nullable();
             $table->timestamps();

@@ -8,4 +8,13 @@ class OptionSelectHelpers
         'Pria' => 'Pria',
         'Wanita' => 'Wanita',
     ];
+
+    public static array $religion = [
+        'Islam' => 'Islam',
+        'Kristen' => 'Kristen',
+        'Katholik' => 'Katholik',
+        'Hindu' => 'Hindu',
+        'Budha' => 'Budha',
+        'Konghucu' => 'Konghucu',
+    ];
 }

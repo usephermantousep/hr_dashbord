@@ -41,8 +41,12 @@ class EmployeeSeeder extends Seeder
                 "join_date" => $join_date,
                 "gender" => $gender,
                 "leaving_date" => $leaving_date,
-                "employment_status_id" => $leaving_date ? $faker->numberBetween(2, 4) : 1,
-                "to_date" => $leaving_date,
+                "employment_status_id" => $leaving_date ? 2 : 1,
+                "employment_type_id" => $leaving_date ? $faker->numberBetween(2, 4) : 1,
+                'marital_status_id' => $faker->numberBetween(1, 6),
+                'religion' => collect(OptionSelectHelpers::$religion)
+                    ->keys()
+                    ->toArray()[$faker->numberBetween(0, 5)],
             ];
         }
         Employee::insert($employees);

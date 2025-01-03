@@ -6,6 +6,7 @@ use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Helper\OptionSelectHelpers;
 use App\Models\Employee;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Pages\Page;
+use Filament\Resources\Pages\Page as PagesPage;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -47,7 +49,7 @@ class EmployeeResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
+                Section::make('Data')
                     ->schema([
                         TextInput::make('employee_id')
                             ->label(__('global.employee_id'))
@@ -82,13 +84,13 @@ class EmployeeResource extends Resource
                             ->preload()
                             ->required()
                             ->live()
+                            ->label(__('global.employment_status'))
                             ->native(false)
                             ->searchable(),
-                        DatePicker::make('to_date')
-                            ->native(false)
-                            ->date('d-M-Y')
-                            ->hidden(fn(Get $get) => $get('status_id') === 1)
-                            ->nullable(),
+                        Select::make('religion')
+                            ->options(OptionSelectHelpers::$religion)
+                            ->label(__('global.religion'))
+                            ->required(),
                         Select::make('gender')
                             ->options(OptionSelectHelpers::$genders)
                             ->label(__('global.gender'))
@@ -101,9 +103,37 @@ class EmployeeResource extends Resource
                         DatePicker::make('leaving_date')
                             ->label(__('global.leaving_date'))
                             ->native(false)
+                            ->reactive()
+                            ->live()
                             ->date('d-M-Y')
                             ->nullable(),
-                    ])->columns(3)
+                        TextInput::make('years_of_service')
+                            ->label(__('global.years_of_service'))
+                            ->readOnly()
+                            ->hidden(
+                                fn(PagesPage $livewire) => !($livewire instanceof ViewRecord)
+                            )
+                            ->live()
+                            ->formatStateUsing(
+                                function (Get $get) {
+                                    $joinDate = $get('join_date');
+                                    if (!$joinDate) {
+                                        return '';
+                                    }
+                                    $joinDate = Carbon::parse($joinDate);
+                                    $now = now();
+                                    if ($get('leaving_date')) {
+                                        $now = Carbon::parse($get('leaving_date'));
+                                    }
+                                    $diff = $joinDate->diff($now);
+                                    $years = $diff->y;
+                                    $months = $diff->m;
+
+                                    return "{$years} " . __('global.years') . " {$months} " . __('global.months');
+                                }
+                            )
+                            ->reactive()
+                    ])->columns(3),
             ]);
     }
 

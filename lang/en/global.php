@@ -27,4 +27,12 @@ return [
     "leaving_date" => "Leaving Date",
     "period" => "Period",
     "is_done" => "Is Done",
+    "marital_status" => "Marital Status",
+    "religion" => "Religion",
+    "employment_status" => "Employment Status",
+    "employment_type" => "Employment Type",
+    "family" => "Family",
+    "years_of_service" => "Years of Service",
+    "years" => "Year(s)",
+    "months" => "Month(s)",
 ];

@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
-use App\Models\Department;
+use App\Filament\Resources\FamilyResource\Pages;
+use App\Filament\Resources\FamilyResource\RelationManagers;
+use App\Models\Family;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,24 +16,37 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DepartmentResource extends Resource
+class FamilyResource extends Resource
 {
-    protected static ?string $model = Department::class;
+    protected static ?string $model = Family::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static ?string $navigationIcon = 'heroicon-c-user-circle';
     protected static ?string $navigationGroup = 'Settings';
+
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.family');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.family');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.family');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make()
-                    ->schema(
-                        [
-                            TextInput::make('name')
-                                ->label(__('global.name')),
-                        ]
-                    )
+                Fieldset::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('global.name'))
+                    ])
             ]);
     }
 
@@ -43,10 +56,10 @@ class DepartmentResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('global.name'))
+                    ->searchable()
+
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -65,10 +78,10 @@ class DepartmentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDepartments::route('/'),
-            'create' => Pages\CreateDepartment::route('/create'),
-            'view' => Pages\ViewDepartment::route('/{record}'),
-            'edit' => Pages\EditDepartment::route('/{record}/edit'),
+            'index' => Pages\ListFamilies::route('/'),
+            'create' => Pages\CreateFamily::route('/create'),
+            'view' => Pages\ViewFamily::route('/{record}'),
+            'edit' => Pages\EditFamily::route('/{record}/edit'),
         ];
     }
 }

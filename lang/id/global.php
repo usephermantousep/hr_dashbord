@@ -27,4 +27,12 @@ return [
     "leaving_date" => "Tanggal Keluar",
     "period" => "Periode",
     "is_done" => "Selesai",
+    "marital_status" => "Status Pernikahan",
+    "religion" => "Agama",
+    "employment_status" => "Status Karyawan",
+    "employment_type" => "Jenis Karyawan",
+    "family" => "Keluarga",
+    "years_of_service" => "Masa Kerja",
+    "years" => "Tahun",
+    "months" => "Bulan",
 ];
