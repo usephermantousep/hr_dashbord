@@ -53,5 +53,7 @@ return [
     "contact" => "Contact",
     "is_emergency_contact" => "Emergency Contact",
     "start_contract" => "Start Contract",
-    "end_contract" => "End Contract"
+    "end_contract" => "End Contract",
+    "year" => "Year",
+    "month" => "Month",
 ];

@@ -53,5 +53,7 @@ return [
     "contact" => "Kontak",
     "is_emergency_contact" => "Kontak Darurat",
     "start_contract" => "Mulai Kontrak",
-    "end_contract" => "Selesai Kontrak"
+    "end_contract" => "Selesai Kontrak",
+    "year" => "Tahun",
+    "month" => "Bulan",
 ];
