@@ -27,11 +27,13 @@ class DashboardPage extends Dashboard
                 Section::make('Filter')
                     ->schema([
                         Select::make('year')
+                            ->label(__('global.year'))
                             ->native(false)
                             ->searchable()
                             ->options(collect(DateHelper::$years)->sortKeysDesc()->toArray())
                             ->default(now()->year),
                         Select::make('month')
+                            ->label(__('global.month'))
                             ->options(DateHelper::$months)
                             ->native(false)
                             ->searchable()

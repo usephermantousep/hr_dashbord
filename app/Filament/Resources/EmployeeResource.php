@@ -62,6 +62,7 @@ class EmployeeResource extends Resource
                     ->collapsible()
                     ->schema(self::getInsuraceFormSection())->columns(2),
                 Section::make(__('global.address'))
+                    ->collapsible()
                     ->schema([
                         Repeater::make(__('global.address'))
                             ->relationship('addresses')
