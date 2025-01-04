@@ -59,4 +59,19 @@ class Employee extends Model
     {
         return $this->hasMany(TrainingEmployee::class);
     }
+
+    public function families(): HasMany
+    {
+        return $this->hasMany(EmployeeFamily::class);
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(EmployeeContact::class);
+    }
 }

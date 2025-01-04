@@ -44,9 +44,18 @@ class EmployeeSeeder extends Seeder
                 "employment_status_id" => $leaving_date ? 2 : 1,
                 "employment_type_id" => $leaving_date ? $faker->numberBetween(2, 4) : 1,
                 'marital_status_id' => $faker->numberBetween(1, 6),
-                'religion' => collect(OptionSelectHelpers::$religion)
+                "religion" => collect(OptionSelectHelpers::$religion)
                     ->keys()
                     ->toArray()[$faker->numberBetween(0, 5)],
+                "place_of_birth" => $faker->city(),
+                "date_of_birth" => Carbon::parse($join_date->getTimestamp())->subYear($faker->numberBetween(18, 40)),
+                "last_education" => $faker->word(),
+                "last_education_major" => $faker->word(),
+                "identity_no" => $faker->nik(),
+                "npwp_no" => $faker->numberBetween(1000000000000, 9999999999999),
+                "health_bpjs" => $faker->numberBetween(1000000000000, 9999999999999),
+                "employment_bpjs" => $faker->numberBetween(1000000000000, 9999999999999),
+                "phone_number" => $faker->phoneNumber('08#########'),
             ];
         }
         Employee::insert($employees);

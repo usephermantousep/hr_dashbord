@@ -22,4 +22,14 @@ class EditEmployee extends EditRecord
     {
         return $this->getResource()::getUrl('view', ['record' => $this->record]);
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if ($data['employment_status_id'] == '2') {
+            $data['start_contract'] = null;
+            $data['end_contract'] = null;
+        }
+
+        return $data;
+    }
 }

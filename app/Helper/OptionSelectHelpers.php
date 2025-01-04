@@ -17,4 +17,9 @@ class OptionSelectHelpers
         'Budha' => 'Budha',
         'Konghucu' => 'Konghucu',
     ];
+
+    public static array $addressType = [
+        "Sesuai KTP" => "Sesuai KTP",
+        "Domisili" => "Domisili",
+    ];
 }

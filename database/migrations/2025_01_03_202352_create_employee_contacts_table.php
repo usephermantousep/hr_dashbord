@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('employee_id')
                 ->references('id')
                 ->on('employees')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
             $table->boolean('is_emergency_contact')
                 ->default(false);
             $table->string('relation');

@@ -32,6 +32,10 @@ return new class extends Migration
                 ->references('id')
                 ->on('employment_statuses')
                 ->onDelete('restrict');
+            $table->date('start_contract')
+                ->nullable();
+            $table->date('end_contract')
+                ->nullable();
             $table->foreignId('employment_type_id')
                 ->references('id')
                 ->on('employment_types')
@@ -41,10 +45,28 @@ return new class extends Migration
                 ->on('marital_statuses')
                 ->onDelete('restrict');
             $table->date('join_date');
+            $table->date('leaving_date')
+                ->nullable();
             $table->string('gender');
             $table->string('religion')
                 ->nullable();
-            $table->date('leaving_date')
+            $table->string('place_of_birth')
+                ->nullable();
+            $table->date('date_of_birth')
+                ->nullable();
+            $table->string('last_education')
+                ->nullable();
+            $table->string('last_education_major')
+                ->nullable();
+            $table->string('identity_no')
+                ->nullable();
+            $table->string('npwp_no')
+                ->nullable();
+            $table->string('health_bpjs')
+                ->nullable();
+            $table->string('employment_bpjs')
+                ->nullable();
+            $table->string('phone_number')
                 ->nullable();
             $table->timestamps();
         });

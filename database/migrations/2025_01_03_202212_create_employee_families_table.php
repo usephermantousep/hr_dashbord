@@ -16,12 +16,12 @@ return new class extends Migration
             $table->foreignId('employee_id')
                 ->references('id')
                 ->on('employees')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
             $table->foreignId('family_id')
                 ->references('id')
                 ->on('families')
                 ->onDelete('restrict');
-            $table->string('relationship');
+            $table->string('name');
             $table->string('gender');
             $table->date('birth_date')
                 ->nullable();

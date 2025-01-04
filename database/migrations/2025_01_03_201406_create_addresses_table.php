@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('employee_id')
                 ->references('id')
                 ->on('employees')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
             $table->string('type');
+            $table->boolean('is_same_address')
+                ->default(false);
             $table->string('address')
                 ->nullable();
             $table->timestamps();
