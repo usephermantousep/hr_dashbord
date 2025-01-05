@@ -24,6 +24,22 @@ class PayrollResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-banknotes';
 
+
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.payroll');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.payroll');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.payroll');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SalaryComponent extends Model
 {
@@ -13,6 +14,11 @@ class SalaryComponent extends Model
     protected $guarded = [
         'id'
     ];
+
+    public function salaryStructureComponents(): HasMany
+    {
+        return $this->hasMany(SalaryStructureComponent::class);
+    }
 
     public function salaryStructures(): BelongsToMany
     {

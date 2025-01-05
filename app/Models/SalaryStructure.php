@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -21,13 +22,13 @@ class SalaryStructure extends Model
         return $this->hasMany(SalaryStructureComponent::class);
     }
 
-    public function salaryComponents(): BelongsToMany
+    public function salaryEarningComponents(): BelongsToMany
     {
-        return $this->belongsToMany(SalaryComponent::class, 'salary_structure_components');
+        return $this->belongsToMany(SalaryComponent::class, 'salary_structure_components')->where('type', 1);
     }
 
-    // public function earningsSalaryComponents()
-    // {
-    //     return $this->salaryComponents()
-    // }
+    public function salaryDeductionComponents(): BelongsToMany
+    {
+        return $this->belongsToMany(SalaryComponent::class, 'salary_structure_components')->where('type', 0);
+    }
 }

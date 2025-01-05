@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SalaryStructureResource\Pages;
 use App\Filament\Resources\SalaryStructureResource\RelationManagers;
+use App\Filament\Resources\SalaryStructureResource\RelationManagers\SalaryDeductionComponentsRelationManager;
+use App\Filament\Resources\SalaryStructureResource\RelationManagers\SalaryEarningComponentsRelationManager;
 use App\Helper\OptionSelectHelpers;
 use App\Models\SalaryStructure;
 use Filament\Forms;
@@ -23,7 +25,27 @@ class SalaryStructureResource extends Resource
 {
     protected static ?string $model = SalaryStructure::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    // protected static ?string $navigationIcon = 'heroicon-c-numbered-list';
+
+    public static function getNavigationParentItem(): ?string
+    {
+        return __('global.payroll');
+    }
+
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.salary_structure');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.salary_structure');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.salary_structure');
+    }
 
     public static function form(Form $form): Form
     {
@@ -59,7 +81,8 @@ class SalaryStructureResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SalaryEarningComponentsRelationManager::class,
+            SalaryDeductionComponentsRelationManager::class,
         ];
     }
 

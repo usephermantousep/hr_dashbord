@@ -14,11 +14,6 @@ class SalaryStructureComponent extends Model
         'id'
     ];
 
-    public function salaryStructure(): BelongsTo
-    {
-        return $this->belongsTo(SalaryStructure::class);
-    }
-
     public function salaryComponent(): BelongsTo
     {
         return $this->belongsTo(SalaryComponent::class);

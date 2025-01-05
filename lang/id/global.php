@@ -58,4 +58,8 @@ return [
     "month" => "Bulan",
     "earning" => "Pendapatan",
     "deduction" => "Potongan",
+    "salary_component" => "Komponen Gaji",
+    "salary_structure" => "Struktur Gaji",
+    "type" => "Jenis",
+    "is_manual_input" => "Manual Input",
 ];

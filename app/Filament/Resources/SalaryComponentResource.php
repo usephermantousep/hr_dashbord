@@ -23,7 +23,27 @@ class SalaryComponentResource extends Resource
 {
     protected static ?string $model = SalaryComponent::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    // protected static ?string $navigationIcon = 'heroicon-s-queue-list';
+
+    public static function getNavigationParentItem(): ?string
+    {
+        return __('global.payroll');
+    }
+
+    public static function getTitleCaseModelLabel(): string
+    {
+        return __('global.salary_component');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('global.salary_component');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('global.salary_component');
+    }
 
     public static function form(Form $form): Form
     {
