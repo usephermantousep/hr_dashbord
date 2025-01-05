@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\EmploymentStatus;
+use App\Models\SalaryStructure;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -30,6 +31,12 @@ class DatabaseSeeder extends Seeder
             TrainingEmployeeSeeder::class,
             AttendanceGeneratorSeeder::class,
             AttendanceGeneratorEmployeeSeeder::class,
+            SalaryComponentSeeder::class,
+            SalaryStructureSeeder::class,
+            SalaryStructureComponentSeeder::class,
+            // EmployeeSalaryStructureSeeder::class,
+            // SalarySlipSeeder::class,
+            // SalarySlipComponentsSeeder::class,
         ]);
     }
 }

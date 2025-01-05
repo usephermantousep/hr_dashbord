@@ -56,4 +56,10 @@ return [
     "end_contract" => "End Contract",
     "year" => "Year",
     "month" => "Month",
+    "earning" => "Earning",
+    "deduction" => "Deduction",
+    "salary_component" => "Salary Component",
+    "salary_structure" => "Salary Structure",
+    "type" => "Type",
+    "is_manual_input" => "Is Manual Input",
 ];

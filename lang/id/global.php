@@ -56,4 +56,6 @@ return [
     "end_contract" => "Selesai Kontrak",
     "year" => "Tahun",
     "month" => "Bulan",
+    "earning" => "Pendapatan",
+    "deduction" => "Potongan",
 ];

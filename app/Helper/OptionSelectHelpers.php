@@ -22,4 +22,9 @@ class OptionSelectHelpers
         "Sesuai KTP" => "Sesuai KTP",
         "Domisili" => "Domisili",
     ];
+
+    public static array $salaryComponentTypes = [
+        0 => 'Potongan',
+        1 => 'Pendapatan',
+    ];
 }
