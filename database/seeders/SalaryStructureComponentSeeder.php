@@ -25,8 +25,7 @@ class SalaryStructureComponentSeeder extends Seeder
             foreach ($salaryComponents as $salaryComponent) {
                 $data[] = [
                     'salary_structure_id' => $salaryStructure->id,
-                    'salary_component_id' => $salaryComponent->id,
-                    'value' => $faker->numberBetween(1000000, 2000000)
+                    'salary_component_id' => $salaryComponent->id
                 ];
             }
         }

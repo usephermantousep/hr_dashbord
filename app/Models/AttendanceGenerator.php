@@ -7,6 +7,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 
 class AttendanceGenerator extends Model
@@ -37,6 +38,11 @@ class AttendanceGenerator extends Model
     public function generateds()
     {
         return $this->hasMany(Attendance::class, 'generate_id');
+    }
+
+    public function employeeAttendances(): HasMany
+    {
+        return $this->hasMany(AttendanceGeneratorEmployee::class);
     }
 
     public function generate(): void

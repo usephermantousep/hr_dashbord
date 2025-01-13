@@ -62,4 +62,5 @@ return [
     "salary_structure" => "Salary Structure",
     "type" => "Type",
     "is_manual_input" => "Is Manual Input",
+    "employee_mechine_id" => "Employee Mechine ID",
 ];

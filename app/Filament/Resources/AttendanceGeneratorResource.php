@@ -10,6 +10,8 @@ use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -48,45 +50,28 @@ class AttendanceGeneratorResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $employees = Employee::orderBy('name')->get()->pluck('name', 'id');
         return $form
             ->schema([
                 Section::make('Generate Data')
                     ->schema([
                         Fieldset::make()
                             ->schema([
-                                TextInput::make('document_number')
-                                    ->label(__('global.document_number'))
-                                    ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
-                                    ->disabled(),
-                                DatePicker::make('from_date')
-                                    ->label(__('global.from_date'))
-                                    ->native(false)
-                                    ->date('d-M-Y')
-                                    ->required(),
-                                DatePicker::make('to_date')
-                                    ->label(__('global.to_date'))
-                                    ->native(false)
-                                    ->date('d-M-Y')
-                                    ->required(),
-                                Select::make('attendance_status_id')
-                                    ->relationship('attendanceStatus', 'name')
-                                    ->label(__('global.attendance_status'))
-                                    ->native(false)
-                                    ->required(),
+                                FileUpload::make('file')
+                                    ->storeFileNamesIn('fileName'),
                                 Checkbox::make('is_generated')
                                     ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
                                     ->label(__('global.is_generated')),
                             ])
                             ->columns(3),
-                        Select::make('employees')
-                            ->options(
-                                Employee::orderBy('name')->get()->pluck('name', 'id')
-                            )
-                            ->preload()
-                            ->multiple()
-                            ->searchable()
-                            ->columnSpanFull()
-                            ->label(__('global.employee')),
+                        Repeater::make('employees')
+                            ->relationship('employeeAttendances')
+                            ->schema([
+                                Select::make('employee')
+                                    ->options($employees)
+                                    ->disabled()
+                                    ->label(__('global.employee')),
+                            ]),
                         Fieldset::make()
                             ->schema([
                                 Select::make('created_by')

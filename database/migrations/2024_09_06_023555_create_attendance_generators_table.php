@@ -15,18 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('document_number')
                 ->unique();
-            $table->date('from_date');
-            $table->date('to_date');
             $table->date('generate_at')
                 ->nullable();
-            $table->longText('employees')->nullable();
             $table->boolean('is_generated')
                 ->default(false);
-            $table->unsignedBigInteger('attendance_status_id');
-            $table->foreign('attendance_status_id')
-                ->references('id')
-                ->on('attendance_statuses')
-                ->onDelete('restrict');
             $table->unsignedBigInteger('create_by');
             $table->foreign('create_by')
                 ->references('id')

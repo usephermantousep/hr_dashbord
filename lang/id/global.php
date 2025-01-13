@@ -62,4 +62,5 @@ return [
     "salary_structure" => "Struktur Gaji",
     "type" => "Jenis",
     "is_manual_input" => "Manual Input",
+    "employee_mechine_id" => "ID Mesin Karyawan",
 ];

@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('type');
-            $table->boolean('is_manual_input')
-                ->default(true);
             $table->timestamps();
         });
     }

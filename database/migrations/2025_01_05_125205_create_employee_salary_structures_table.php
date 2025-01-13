@@ -17,10 +17,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('employees')
                 ->onDelete('restrict');
-            $table->foreignId('salary_structure_id')
-                ->references('id')
-                ->on('salary_structures')
-                ->onDelete('restrict');
             $table->timestamps();
         });
     }

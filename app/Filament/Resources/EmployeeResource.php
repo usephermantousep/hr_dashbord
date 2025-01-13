@@ -149,6 +149,9 @@ class EmployeeResource extends Resource
                 ->label(__('global.employee_id'))
                 ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
                 ->disabled(),
+            TextInput::make('employee_mechine_id')
+                ->label(__('global.employee_mechine_id'))
+                ->disabled(),
             TextInput::make('name')
                 ->label(__('global.name'))
                 ->required(),

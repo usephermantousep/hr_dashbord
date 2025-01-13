@@ -56,9 +56,6 @@ class SalaryComponentResource extends Resource
                         Select::make('type')
                             ->label(__('global.type'))
                             ->options(OptionSelectHelpers::$salaryComponentTypes),
-                        Checkbox::make('is_manual_input')
-                            ->default(true)
-                            ->label(__('global.is_manual_input'))
                     ])->columns(2)
             ]);
     }

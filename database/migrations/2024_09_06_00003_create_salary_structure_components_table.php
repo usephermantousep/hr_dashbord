@@ -21,8 +21,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('salary_components')
                 ->onDelete('restrict');
-            $table->double('value')
-                ->nullable();
             $table->timestamps();
         });
     }

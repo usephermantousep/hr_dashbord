@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('employee_id')
                 ->unique();
+            $table->string('employee_mechine_id')
+                ->unique();
             $table->string('name');
             $table->foreignId('branch_id')
                 ->references('id')
@@ -68,6 +70,11 @@ return new class extends Migration
                 ->nullable();
             $table->string('phone_number')
                 ->nullable();
+            $table->foreignId('salary_structure_id')
+                ->nullable()
+                ->references('id')
+                ->on('salary_structures')
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }
