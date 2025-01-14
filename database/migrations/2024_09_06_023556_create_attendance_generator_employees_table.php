@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('attendance_generator_employees', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('attendance_generator_id');
+            $table->date('date');
             $table->foreign('attendance_generator_id')
                 ->references('id')
                 ->on('attendance_generators')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
             $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')
                 ->references('id')

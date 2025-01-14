@@ -40,59 +40,57 @@ class AttendanceGenerator extends Model
         return $this->hasMany(Attendance::class, 'generate_id');
     }
 
-    public function employeeAttendances(): HasMany
+    public function attendanceGeneratorEmployees(): HasMany
     {
         return $this->hasMany(AttendanceGeneratorEmployee::class);
     }
 
+    public function attendanceGeneratorIsntEmployees(): HasMany
+    {
+        return $this->hasMany(AttendanceGeneratorIsntEmployee::class);
+    }
+
     public function generate(): void
     {
-        $from_date = Carbon::parse($this->from_date);
-        $to_date = Carbon::parse($this->to_date);
-        $dateRange = CarbonPeriod::create($from_date, $to_date);
+        $attendanceGeneratorEmployee = $this->attendanceGeneratorEmployees;
+        $uniqueDates = $attendanceGeneratorEmployee->map(fn($i) => $i->date)->unique();
+        $uniqueEmployees = $attendanceGeneratorEmployee->map(fn($i) => $i->employee_id)->unique();
+        $minDate = $uniqueDates->min();
+        $maxDate = $uniqueDates->max();
+        $dateRange = CarbonPeriod::create($minDate, $maxDate);
 
-        // Collect all dates as strings (Y-m-d format)
         $dates = [];
         foreach ($dateRange as $date) {
             $dates[] = $date->format('Y-m-d');
         }
 
-        // Query for any existing attendance records in the date range for the given employees
-        $existingAttendances = Attendance::whereIn('employee_id', $this->employees)
+        $existingAttendances = Attendance::whereIn('employee_id', $uniqueEmployees)
             ->whereIn('date', $dates)
             ->get();
 
-        // If any existing records are found, throw an exception and list them
         if ($existingAttendances->isNotEmpty()) {
-            // Format each conflict as "Employee X on Date Y"
             $conflicts = $existingAttendances->map(function ($attendance) {
                 return 'Karyawan : ' . Employee::find($attendance->employee_id)->name . ' Nomer Kehadiran : ' . $attendance->document_number;
             });
 
-            // Join the conflicts with commas or new lines (your choice)
             $conflictString = implode(', ', $conflicts->toArray());
 
-            // Throw an exception with the formatted string
             throw new \Exception(__('global.attendance_document_exist', ['datas' => $conflictString]));
         }
 
-        // If no conflicts, prepare data for batch insert
         $data = [];
-        foreach ($this->employees as $e) {
-            foreach ($dateRange as $date) {
-                $data[] = [
-                    'employee_id' => $e,
-                    'date' => $date->format('Y-m-d'),
-                    'attendance_status_id' => $this->attendance_status_id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                    'generate_id' => $this->id,
-                    'document_number' => DocumentNumber::generateAttendanceDocumentNumber()
-                ];
-            }
+        foreach ($attendanceGeneratorEmployee as $e) {
+            $data[] = [
+                'employee_id' => $e->employee_id,
+                'date' => $e->date,
+                'attendance_status_id' => $e->attendance_status_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'generate_id' => $this->id,
+                'document_number' => DocumentNumber::generateAttendanceDocumentNumber()
+            ];
         }
 
-        // Insert all new attendance records
         if (!empty($data)) {
             Attendance::insert($data);
         }

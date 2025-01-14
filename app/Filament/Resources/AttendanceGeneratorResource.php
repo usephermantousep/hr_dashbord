@@ -3,7 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AttendanceGeneratorResource\Pages;
-use App\Filament\Resources\AttendanceGeneratorResource\RelationManagers;
+use App\Filament\Resources\AttendanceGeneratorResource\RelationManagers\AttendanceGeneratorEmployeesRelationManager;
+use App\Filament\Resources\AttendanceGeneratorResource\RelationManagers\AttendanceGeneratorIsntEmployeesRelationManager;
 use App\Models\AttendanceGenerator;
 use App\Models\Employee;
 use Filament\Forms;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -50,7 +52,6 @@ class AttendanceGeneratorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $employees = Employee::orderBy('name')->get()->pluck('name', 'id');
         return $form
             ->schema([
                 Section::make('Generate Data')
@@ -58,20 +59,12 @@ class AttendanceGeneratorResource extends Resource
                         Fieldset::make()
                             ->schema([
                                 FileUpload::make('file')
-                                    ->storeFileNamesIn('fileName'),
+                                    ->storeFileNamesIn('file_name'),
                                 Checkbox::make('is_generated')
                                     ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
                                     ->label(__('global.is_generated')),
                             ])
                             ->columns(3),
-                        Repeater::make('employees')
-                            ->relationship('employeeAttendances')
-                            ->schema([
-                                Select::make('employee')
-                                    ->options($employees)
-                                    ->disabled()
-                                    ->label(__('global.employee')),
-                            ]),
                         Fieldset::make()
                             ->schema([
                                 Select::make('created_by')
@@ -82,7 +75,10 @@ class AttendanceGeneratorResource extends Resource
                                     ->relationship('generateBy', 'name')
                                     ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
                                     ->label(__('global.generated_by')),
-                            ])
+                                Textarea::make('error_message')
+                                    ->readOnly()
+                                    ->columnSpanFull(),
+                            ])->columns(2)
                     ])
                     ->disabled(fn(Get $get) => $get('is_generated')),
 
@@ -96,13 +92,14 @@ class AttendanceGeneratorResource extends Resource
                 TextColumn::make('document_number')
                     ->label(__('global.document_number'))
                     ->searchable(),
-                TextColumn::make('from_date')
-                    ->date('d-M-Y'),
-                TextColumn::make('to_date')
-                    ->date('d-M-Y'),
                 IconColumn::make('is_generated')
+                    ->label(__('global.is_generated'))
                     ->boolean(),
                 TextColumn::make('createdBy.name')
+                    ->label(__('global.created_by'))
+                    ->searchable(),
+                TextColumn::make('generateBy.name')
+                    ->label(__('global.generated_by'))
             ])
             ->filters([
                 //
@@ -122,7 +119,8 @@ class AttendanceGeneratorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AttendanceGeneratorEmployeesRelationManager::class,
+            AttendanceGeneratorIsntEmployeesRelationManager::class,
         ];
     }
 

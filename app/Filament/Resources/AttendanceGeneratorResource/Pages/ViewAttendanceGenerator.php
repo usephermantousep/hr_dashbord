@@ -3,11 +3,13 @@
 namespace App\Filament\Resources\AttendanceGeneratorResource\Pages;
 
 use App\Filament\Resources\AttendanceGeneratorResource;
+use App\Jobs\GenerateAttendanceJob;
 use Exception;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Support\Facades\Artisan;
 
 class ViewAttendanceGenerator extends ViewRecord
 {
@@ -23,12 +25,12 @@ class ViewAttendanceGenerator extends ViewRecord
                 Action::make('generate')
                     ->action(function () {
                         try {
-                            $this->record->generate();
-                            redirect(AttendanceGeneratorResource::getUrl('view', ['record' => $this->record]));
                             Notification::make()
-                                ->title('Berhasil generate Kehadiran')
-                                ->success()
+                                ->title('Proses generate kehadiran')
+                                ->info()
                                 ->send();
+                            GenerateAttendanceJob::dispatch($this->record->id);
+                            redirect(AttendanceGeneratorResource::getUrl('index'));
                         } catch (Exception $e) {
                             Notification::make()
                                 ->title($e->getMessage())

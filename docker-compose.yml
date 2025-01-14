@@ -28,6 +28,40 @@ services:
         networks:
             - app-net
 
+    # Queue Worker Service
+    laravel-queue-worker:
+        image: laravel_app # Reference the existing image built for laravel-app
+        container_name: laravel-queue-worker
+        tty: true
+        environment:
+            SERVICE_NAME: laravel-queue-worker
+            SERVICE_TAGS: dev
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - app-net
+        command: php artisan queue:work --queue=default --sleep=3 --tries=3 --max-time=3600
+        restart: always
+
+    # Scheduler Service
+    laravel-scheduler-worker:
+        image: laravel_app # Reference the existing image built for laravel-app
+        container_name: laravel-scheduler-worker
+        tty: true
+        environment:
+            SERVICE_NAME: laravel-scheduler-worker
+            SERVICE_TAGS: dev
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - app-net
+        command: php artisan schedule:work
+        restart: always
+
     nginx:
         image: nginx:latest
         container_name: laravel_nginx

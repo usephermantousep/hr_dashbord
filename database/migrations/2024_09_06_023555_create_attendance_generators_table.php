@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('attendance_generators', function (Blueprint $table) {
             $table->id();
+            $table->string('file');
+            $table->string('file_name');
             $table->string('document_number')
                 ->unique();
-            $table->date('generate_at')
-                ->nullable();
             $table->boolean('is_generated')
                 ->default(false);
-            $table->unsignedBigInteger('create_by');
-            $table->foreign('create_by')
+            $table->foreignId('create_by')
                 ->references('id')
                 ->on('users')
                 ->onDelete('restrict');
@@ -30,6 +29,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('restrict');
+            $table->longText('error_message')
+                ->nullable();
             $table->timestamps();
         });
     }

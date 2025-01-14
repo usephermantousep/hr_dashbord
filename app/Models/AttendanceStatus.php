@@ -16,4 +16,21 @@ class AttendanceStatus extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public static function getAttendanceId(bool $isRill, ?string $late, ?string $early, ?string $isAbsent)
+    {
+        if ($isAbsent) {
+            return 5;
+        }
+
+        if ($isRill && $late) {
+            return 2;
+        }
+
+        if ($isRill && $early) {
+            return 3;
+        }
+
+        return 1;
+    }
 }

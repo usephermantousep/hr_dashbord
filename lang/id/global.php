@@ -63,4 +63,5 @@ return [
     "type" => "Jenis",
     "is_manual_input" => "Manual Input",
     "employee_mechine_id" => "ID Mesin Karyawan",
+    'isnt_employee' => "Bukan Karyawan",
 ];
