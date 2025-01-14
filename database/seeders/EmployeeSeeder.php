@@ -25,7 +25,7 @@ class EmployeeSeeder extends Seeder
             155,
             135,
         ];
-        $employees = (new EmployeeImport)->toCollection(storage_path('/app/public/employee.xlsx'));
+        $employees = (new EmployeeImport)->toCollection(public_path('/employee.xlsx'));
         $data = $employees[0]->map(fn($i) => [
             'name' => $i->get('nama'),
             'kelamin' => in_array($i->get('emp_no'), $women) ? 'Wanita' : 'Pria',
