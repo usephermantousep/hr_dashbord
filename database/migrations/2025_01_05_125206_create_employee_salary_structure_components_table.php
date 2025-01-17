@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('employee_salary_structure_components', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_salary_structure');
-            $table->foreign('employee_salary_structure', 'emp_sal_str_id')
+            $table->foreignId('employee_salary_structure_id');
+            $table->foreign('employee_salary_structure_id', 'emp_sal_str_id')
                 ->references('id')
                 ->on('employee_salary_structures')
                 ->onDelete('restrict');

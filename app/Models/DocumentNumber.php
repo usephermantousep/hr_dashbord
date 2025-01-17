@@ -31,6 +31,12 @@ class DocumentNumber extends Model
         return self::generateDocumentNumber($prefix, $joinDate);
     }
 
+    public static function generateEmployeeSalaryStructureDocumentNumber(): string
+    {
+        $prefix = 'ESS';
+        return self::generateDocumentNumber($prefix);
+    }
+
 
     private static function generateDocumentNumber(string $prefix, DateTime $currentDate = null): string
     {

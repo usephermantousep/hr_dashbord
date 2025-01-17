@@ -59,6 +59,7 @@ class AttendanceGeneratorResource extends Resource
                         Fieldset::make()
                             ->schema([
                                 FileUpload::make('file')
+                                    ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                                     ->storeFileNamesIn('file_name'),
                                 Checkbox::make('is_generated')
                                     ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
