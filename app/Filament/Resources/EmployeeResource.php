@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Helper\DateHelper;
 use App\Helper\OptionSelectHelpers;
 use App\Models\Employee;
 use Carbon\Carbon;
@@ -221,21 +222,16 @@ class EmployeeResource extends Resource
                 ->formatStateUsing(
                     function (Get $get) {
                         $joinDate = $get('join_date');
-                        if (!$joinDate) {
-                            return '';
-                        }
-                        $joinDate = Carbon::parse($joinDate);
-                        $now = now();
-                        if ($get('leaving_date')) {
-                            $now = Carbon::parse($get('leaving_date'));
-                        }
-                        $diff = $joinDate->diff($now);
-                        $years = $diff->y;
-                        $months = $diff->m;
-
-                        return "{$years} " . __('global.years') . " {$months} " . __('global.months');
+                        $leavingDate = $get('leaving_date');
+                        return DateHelper::calculateYearOfService($joinDate, $leavingDate);
                     }
-                )
+                ),
+            Select::make('salary_structure_id')
+                ->relationship('salaryStructure', 'name')
+                ->searchable()
+                ->preload()
+                ->required()
+                ->label(__('global.salary_structure')),
         ];
     }
 

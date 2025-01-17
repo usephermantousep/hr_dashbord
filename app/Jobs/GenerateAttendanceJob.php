@@ -12,13 +12,15 @@ class GenerateAttendanceJob implements ShouldQueue
     use Queueable;
 
     public $id;
+    public $generatorId;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($id)
+    public function __construct($id, $generatorId)
     {
         $this->id = $id;
+        $this->generatorId = $generatorId;
     }
 
     /**
@@ -27,7 +29,7 @@ class GenerateAttendanceJob implements ShouldQueue
     public function handle(): void
     {
         $attendanceGenerator = AttendanceGenerator::find($this->id);
-        $attendanceGenerator->generate();
+        $attendanceGenerator->generate($this->generatorId);
     }
 
     public function failed(\Exception $exception)

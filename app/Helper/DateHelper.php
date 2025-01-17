@@ -2,8 +2,32 @@
 
 namespace App\Helper;
 
+use Carbon\Carbon;
+
 class DateHelper
 {
+    public static function calculateYearOfService($joinDate, $leavingDate): string
+    {
+        if (!$joinDate) {
+            return '';
+        }
+        $joinDate = Carbon::parse($joinDate);
+        $now = now();
+        if ($leavingDate) {
+            $now = Carbon::parse($leavingDate);
+        }
+        $diff = $joinDate->diff($now);
+        $years = $diff->y;
+        $months = $diff->m;
+
+        return "{$years} " . __('global.years') . " {$months} " . __('global.months');
+    }
+
+    public static function isSunday($value)
+    {
+        return Carbon::parse($value)->isSunday();
+    }
+
     public static array $months = [
         1 => "Januari",
         2 => "Februari",

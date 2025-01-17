@@ -74,4 +74,9 @@ class Employee extends Model
     {
         return $this->hasMany(EmployeeContact::class);
     }
+
+    public function salaryStructure(): BelongsTo
+    {
+        return $this->belongsTo(SalaryStructure::class);
+    }
 }

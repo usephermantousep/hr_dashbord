@@ -10,6 +10,7 @@ use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 class ViewAttendanceGenerator extends ViewRecord
 {
@@ -29,7 +30,7 @@ class ViewAttendanceGenerator extends ViewRecord
                                 ->title('Proses generate kehadiran')
                                 ->info()
                                 ->send();
-                            GenerateAttendanceJob::dispatch($this->record->id);
+                            GenerateAttendanceJob::dispatch($this->record->id, Auth::id());
                             redirect(AttendanceGeneratorResource::getUrl('index'));
                         } catch (Exception $e) {
                             Notification::make()

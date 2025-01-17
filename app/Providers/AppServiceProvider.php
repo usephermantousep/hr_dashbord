@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\AttendanceGenerator;
+use App\Observers\AttendanceGeneratorObserver;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
@@ -28,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
                 ->displayLocale('en')
                 ->locales(['en', 'id']); // also accepts a closure
         });
+        AttendanceGenerator::observe(AttendanceGeneratorObserver::class);
     }
 }

@@ -69,16 +69,20 @@ class AttendanceGeneratorResource extends Resource
                             ->schema([
                                 Select::make('created_by')
                                     ->relationship('createdBy', 'name')
-                                    ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
                                     ->label(__('global.created_by')),
                                 Select::make('generate_by')
                                     ->relationship('generateBy', 'name')
-                                    ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
                                     ->label(__('global.generated_by')),
                                 Textarea::make('error_message')
                                     ->readOnly()
+                                    ->hidden(
+                                        fn(AttendanceGenerator $record) => $record->is_generated || !$record->error_message
+                                    )
+                                    ->rows(10)
                                     ->columnSpanFull(),
-                            ])->columns(2)
+                            ])
+                            ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
+                            ->columns(2)
                     ])
                     ->disabled(fn(Get $get) => $get('is_generated')),
 

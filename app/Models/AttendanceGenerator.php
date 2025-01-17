@@ -42,7 +42,8 @@ class AttendanceGenerator extends Model
 
     public function attendanceGeneratorEmployees(): HasMany
     {
-        return $this->hasMany(AttendanceGeneratorEmployee::class);
+        return $this->hasMany(AttendanceGeneratorEmployee::class)
+            ->orderBy('date');
     }
 
     public function attendanceGeneratorIsntEmployees(): HasMany
@@ -50,8 +51,11 @@ class AttendanceGenerator extends Model
         return $this->hasMany(AttendanceGeneratorIsntEmployee::class);
     }
 
-    public function generate(): void
+    public function generate($generatorId): void
     {
+        if ($this->is_generated) {
+            throw new \Exception(__('Sudah tergenerate sebelumnya'));
+        }
         $attendanceGeneratorEmployee = $this->attendanceGeneratorEmployees;
         $uniqueDates = $attendanceGeneratorEmployee->map(fn($i) => $i->date)->unique();
         $uniqueEmployees = $attendanceGeneratorEmployee->map(fn($i) => $i->employee_id)->unique();
@@ -66,6 +70,7 @@ class AttendanceGenerator extends Model
 
         $existingAttendances = Attendance::whereIn('employee_id', $uniqueEmployees)
             ->whereIn('date', $dates)
+            ->limit(10)
             ->get();
 
         if ($existingAttendances->isNotEmpty()) {
@@ -96,7 +101,7 @@ class AttendanceGenerator extends Model
         }
 
         $this->is_generated = 1;
-        $this->generate_by = Auth::id();
+        $this->generate_by = $generatorId;
         $this->save();
     }
 }

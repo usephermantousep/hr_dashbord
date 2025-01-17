@@ -67,6 +67,7 @@ class EmployeeSeeder extends Seeder
                 "health_bpjs" => $faker->numberBetween(1000000000000, 9999999999999),
                 "employment_bpjs" => $faker->numberBetween(1000000000000, 9999999999999),
                 "phone_number" => $faker->phoneNumber('08#########'),
+                "salary_structure_id" => $faker->numberBetween(1, 3)
             ];
         }
         Employee::insert($employees);
