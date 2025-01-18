@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateFamily extends CreateRecord
 {
     protected static string $resource = FamilyResource::class;
+    protected static bool $canCreateAnother = false;
 }

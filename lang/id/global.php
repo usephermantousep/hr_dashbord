@@ -64,4 +64,7 @@ return [
     "is_manual_input" => "Manual Input",
     "employee_mechine_id" => "ID Mesin Karyawan",
     'isnt_employee' => "Bukan Karyawan",
+    "employee_salary_structure" => "Struktur Gaji Karyawan",
+    "value" => "Nilai",
+    "updated_by" => "Diupdate Oleh",
 ];

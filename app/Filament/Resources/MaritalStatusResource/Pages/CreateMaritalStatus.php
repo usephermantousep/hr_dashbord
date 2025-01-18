@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateMaritalStatus extends CreateRecord
 {
     protected static string $resource = MaritalStatusResource::class;
+    protected static bool $canCreateAnother = false;
 }

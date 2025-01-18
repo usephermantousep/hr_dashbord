@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateEmploymentType extends CreateRecord
 {
     protected static string $resource = EmploymentTypeResource::class;
+    protected static bool $canCreateAnother = false;
 }

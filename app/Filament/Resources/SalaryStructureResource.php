@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SalaryStructureResource extends Resource
 {
     protected static ?string $model = SalaryStructure::class;
+    protected static ?int $navigationSort = 2;
 
     // protected static ?string $navigationIcon = 'heroicon-c-numbered-list';
 

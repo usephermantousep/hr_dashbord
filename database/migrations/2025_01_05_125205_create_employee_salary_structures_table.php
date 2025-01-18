@@ -13,9 +13,18 @@ return new class extends Migration
     {
         Schema::create('employee_salary_structures', function (Blueprint $table) {
             $table->id();
+            $table->string('document_number');
             $table->foreignId('employee_id')
                 ->references('id')
                 ->on('employees')
+                ->onDelete('restrict');
+            $table->foreignId('created_by')
+                ->references('id')
+                ->on('users')
+                ->onDelete('restrict');
+            $table->foreignId('updated_by')
+                ->references('id')
+                ->on('users')
                 ->onDelete('restrict');
             $table->timestamps();
         });

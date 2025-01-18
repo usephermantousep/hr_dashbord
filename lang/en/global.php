@@ -63,5 +63,8 @@ return [
     "type" => "Type",
     "is_manual_input" => "Is Manual Input",
     "employee_mechine_id" => "Employee Mechine ID",
-    'isnt_employee' => "Isn't Employee",
+    "isnt_employee" => "Isn't Employee",
+    "employee_salary_structure" => "Employee Salary Structure",
+    "value" => "Value",
+    "updated_by" => "Updated By",
 ];
