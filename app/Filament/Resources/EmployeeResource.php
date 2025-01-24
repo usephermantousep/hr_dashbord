@@ -148,11 +148,9 @@ class EmployeeResource extends Resource
         return [
             TextInput::make('employee_id')
                 ->label(__('global.employee_id'))
-                ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord))
-                ->disabled(),
+                ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord)),
             TextInput::make('employee_mechine_id')
-                ->label(__('global.employee_mechine_id'))
-                ->disabled(),
+                ->label(__('global.employee_mechine_id')),
             TextInput::make('name')
                 ->label(__('global.name'))
                 ->required(),
