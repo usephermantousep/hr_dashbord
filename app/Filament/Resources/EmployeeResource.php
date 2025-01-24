@@ -195,12 +195,12 @@ class EmployeeResource extends Resource
                 ->native(false)
                 ->date('d-M-Y')
                 ->nullable(),
-            Select::make('employment_type_id')
-                ->relationship('employmentType', 'name')
-                ->preload()
-                ->required()
-                ->label(__('global.employment_type'))
-                ->native(false),
+            // Select::make('employment_type_id')
+            //     ->relationship('employmentType', 'name')
+            //     ->preload()
+            //     ->required()
+            //     ->label(__('global.employment_type'))
+            //     ->native(false),
             DatePicker::make('join_date')
                 ->label(__('global.join_date'))
                 ->native(false)

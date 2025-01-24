@@ -53,7 +53,7 @@ class EmployeeSeeder extends Seeder
                 "job_position_id" => $fake_job_position,
                 "join_date" => $join_date,
                 "employment_status_id" => 2,
-                "employment_type_id" => 1,
+                // "employment_type_id" => 1,
                 'marital_status_id' => $faker->numberBetween(1, 6),
                 "religion" => collect(OptionSelectHelpers::$religion)
                     ->keys()

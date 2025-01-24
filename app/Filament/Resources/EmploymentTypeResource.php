@@ -84,4 +84,9 @@ class EmploymentTypeResource extends Resource
             'edit' => Pages\EditEmploymentType::route('/{record}/edit'),
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return false;
+    }
 }
