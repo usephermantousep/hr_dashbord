@@ -6,7 +6,11 @@ use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Helper\DateHelper;
 use App\Helper\OptionSelectHelpers;
+use App\Models\Branch;
+use App\Models\Department;
 use App\Models\Employee;
+use App\Models\EmploymentStatus;
+use App\Models\JobPosition;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
@@ -24,9 +28,11 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rules\Unique;
 
 class EmployeeResource extends Resource
 {
@@ -111,7 +117,44 @@ class EmployeeResource extends Resource
                 TextColumn::make('jobPosition.name')
                     ->label(__('global.job_position'))
             ])
-            ->filters([])
+            ->filters([
+                SelectFilter::make(__('global.branch'))
+                    ->options(Branch::get()->pluck('name', 'id')->toArray())
+                    ->query(
+                        fn(array $data, Builder $query): Builder =>
+                        $query->when(
+                            $data['value'],
+                            fn(Builder $query, $value): Builder => $query->where('branch_id', $value)
+                        )
+                    ),
+                SelectFilter::make(__('global.department'))
+                    ->options(Department::get()->pluck('name', 'id')->toArray())
+                    ->query(
+                        fn(array $data, Builder $query): Builder =>
+                        $query->when(
+                            $data['value'],
+                            fn(Builder $query, $value): Builder => $query->where('department_id', $value)
+                        )
+                    ),
+                SelectFilter::make(__('global.job_position'))
+                    ->options(JobPosition::get()->pluck('name', 'id')->toArray())
+                    ->query(
+                        fn(array $data, Builder $query): Builder =>
+                        $query->when(
+                            $data['value'],
+                            fn(Builder $query, $value): Builder => $query->where('job_position_id', $value)
+                        )
+                    ),
+                SelectFilter::make(__('global.employment_status'))
+                    ->options(EmploymentStatus::get()->pluck('name', 'id')->toArray())
+                    ->query(
+                        fn(array $data, Builder $query): Builder =>
+                        $query->when(
+                            $data['value'],
+                            fn(Builder $query, $value): Builder => $query->where('employment_status_id', $value)
+                        )
+                    ),
+            ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -148,17 +191,28 @@ class EmployeeResource extends Resource
         return [
             TextInput::make('employee_id')
                 ->label(__('global.employee_id'))
-                ->hidden(fn(Page $livewire) => !($livewire instanceof ViewRecord)),
-            TextInput::make('employee_mechine_id')
-                ->label(__('global.employee_mechine_id')),
+                ->required(),
             TextInput::make('name')
                 ->label(__('global.name'))
                 ->required(),
+            TextInput::make('employee_mechine_id')
+                ->label(__('global.employee_mechine_id'))
+                ->nullable()
+                ->unique(
+                    ignoreRecord: true,
+                    modifyRuleUsing: function (Unique $rule, Get $get) {
+                        if (!$get('branch_id')) {
+                            return false;
+                        }
+                        return $rule->where('branch_id', $get('branch_id'));
+                    }
+                ),
             Select::make('branch_id')
                 ->relationship('branch', 'name')
                 ->native(false)
                 ->preload()
                 ->searchable()
+                ->live()
                 ->label(__('global.branch'))
                 ->required(),
             Select::make('department_id')
