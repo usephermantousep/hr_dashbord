@@ -14,8 +14,8 @@ class Payroll extends Model
         'id'
     ];
 
-    public function employee(): BelongsTo
+    public function branch(): BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Branch::class);
     }
 }
