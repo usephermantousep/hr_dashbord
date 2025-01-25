@@ -10,6 +10,8 @@ class EditPayroll extends EditRecord
 {
     protected static string $resource = PayrollResource::class;
 
+    public array $employeeSalaryStructures = [];
+
     protected function getHeaderActions(): array
     {
         return [

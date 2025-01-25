@@ -10,4 +10,6 @@ class CreatePayroll extends CreateRecord
 {
     protected static string $resource = PayrollResource::class;
     protected static bool $canCreateAnother = false;
+
+    public array $employeeSalaryStructures = [];
 }

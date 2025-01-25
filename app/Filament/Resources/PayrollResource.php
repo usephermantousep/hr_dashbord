@@ -6,7 +6,9 @@ use App\Filament\Resources\PayrollResource\Pages;
 use App\Filament\Resources\PayrollResource\RelationManagers;
 use App\Helper\DateHelper;
 use App\Models\Employee;
+use App\Models\EmployeeSalaryStructure;
 use App\Models\Payroll;
+use App\Models\SalaryStructure;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
@@ -47,6 +49,40 @@ class PayrollResource extends Resource
         return __('global.payroll');
     }
 
+    private static function afterStateUpdatedBranch(Get $get, Set $set, \Livewire\Component $livewire): void
+    {
+        if (!$get('branch_id')) {
+            $set(__('global.employee'), []);
+            return;
+        }
+
+        $employees = Employee::where(
+            'branch_id',
+            $get('branch_id')
+        )->orderBy('name')
+            ->pluck('id');
+        $employees = collect($employees)->map(function ($i) {
+            return [
+                'employee_id' => $i
+            ];
+        });
+        if (empty($employees)) {
+            $set(__('global.employee'), []);
+            return;
+        }
+        $employeeSalaryStructures = EmployeeSalaryStructure::whereIn('employee_id', $employees)->get();
+
+        $employeeSalaryStructures = $employeeSalaryStructures->groupBy('employee_id')->map(function ($items) {
+            return $items->mapWithKeys(function ($item) {
+                return [$item->id => $item->document_number];
+            });
+        })->toArray();
+        $livewire->employeeSalaryStructures = [];
+        $livewire->employeeSalaryStructures = $employeeSalaryStructures;
+
+        $set(__('global.employee'), $employees);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -57,25 +93,11 @@ class PayrollResource extends Resource
                             ->relationship('branch', 'name')
                             ->label(__('global.branch'))
                             ->live()
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
                             ->afterStateUpdated(
-                                function (Get $get, Set $set) {
-                                    if (!$get('branch_id')) {
-                                        $set('payroll_details', []);
-                                        return;
-                                    }
-
-                                    $employees = Employee::where(
-                                        'branch_id',
-                                        $get('branch_id')
-                                    )->orderBy('name')
-                                        ->pluck('id');
-                                    $employees = collect($employees)->map(function ($i) {
-                                        return [
-                                            'employee_id' => $i
-                                        ];
-                                    });
-                                    $set('payroll_details', $employees);
-                                }
+                                fn(Get $get, Set $set, \Livewire\Component $livewire) => self::afterStateUpdatedBranch($get, $set, $livewire)
                             )
                             ->required(),
                         Select::make('year')
@@ -94,13 +116,28 @@ class PayrollResource extends Resource
                     ->columns(3),
                 Section::make()
                     ->schema([
-                        Repeater::make('payroll_details')
+                        Repeater::make(__('global.employee'))
                             ->schema([
                                 Select::make('employee_id')
-                                    ->options(Employee::all()->pluck('name', 'id'))
+                                    ->options(Employee::pluck('name', 'id'))
                                     ->label(__('global.employee'))
+                                    ->live()
+                                    ->disabled()
                                     ->required(),
+                                Select::make('employee_salary_structure_id')
+                                    ->options(
+                                        fn(\Livewire\Component $livewire, Get $get) => $get(
+                                            'employee_id'
+                                        ) ? $livewire->employeeSalaryStructures[$get('employee_id')] ?? [] : []
+                                    )
+                                    ->label(__('global.employee_salary_structure'))
+                                    ->live()
+                                    ->preload()
+                                    ->required()
                             ])
+                            ->addable(false)
+                            ->distinct()
+                            ->columns(2)
                     ])
 
             ]);
