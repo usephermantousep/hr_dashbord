@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Payroll extends Model
+class PayrollEmployeeStructure extends Model
 {
     use HasFactory;
 
@@ -15,13 +14,13 @@ class Payroll extends Model
         'id'
     ];
 
-    public function branch(): BelongsTo
+    public function payrollEmployee(): BelongsTo
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo(PayrollEmployee::class);
     }
 
-    public function payrollEmployees(): HasMany
+    public function salaryComponent(): BelongsTo
     {
-        return $this->hasMany(PayrollEmployee::class);
+        return $this->belongsTo(SalaryComponent::class);
     }
 }

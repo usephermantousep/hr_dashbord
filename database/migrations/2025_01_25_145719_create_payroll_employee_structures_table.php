@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('payroll_employee_id')
                 ->references('id')
                 ->on('payroll_employees')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
             $table->foreignId('salary_component_id')
                 ->references('id')
                 ->on('salary_components')

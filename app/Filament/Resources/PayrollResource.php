@@ -26,6 +26,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Component;
 
 class PayrollResource extends Resource
 {
@@ -49,7 +50,7 @@ class PayrollResource extends Resource
         return __('global.payroll');
     }
 
-    private static function afterStateUpdatedBranch(Get $get, Set $set, \Livewire\Component $livewire): void
+    private static function afterStateUpdatedBranch(Get $get, Set $set, Component $livewire): void
     {
         if (!$get('branch_id')) {
             $set(__('global.employee'), []);
@@ -65,7 +66,7 @@ class PayrollResource extends Resource
             return [
                 'employee_id' => $i
             ];
-        });
+        })->toArray();
         if (empty($employees)) {
             $set(__('global.employee'), []);
             return;
@@ -78,8 +79,10 @@ class PayrollResource extends Resource
             });
         })->toArray();
         $livewire->employeeSalaryStructures = [];
+        $livewire->employee = [];
         $livewire->employeeSalaryStructures = $employeeSalaryStructures;
-
+        $livewire->employees = Employee::whereIn('id', $employees)->pluck('name', 'id')->toArray();
+        $set(__('global.employee'), []);
         $set(__('global.employee'), $employees);
     }
 
@@ -97,7 +100,7 @@ class PayrollResource extends Resource
                             ->searchable()
                             ->preload()
                             ->afterStateUpdated(
-                                fn(Get $get, Set $set, \Livewire\Component $livewire) => self::afterStateUpdatedBranch($get, $set, $livewire)
+                                fn(Get $get, Set $set, Component $livewire) => self::afterStateUpdatedBranch($get, $set, $livewire)
                             )
                             ->required(),
                         Select::make('year')
@@ -117,12 +120,18 @@ class PayrollResource extends Resource
                 Section::make()
                     ->schema([
                         Repeater::make(__('global.employee'))
+                            ->grid(2)
+                            ->relationship('payrollEmployees')
+                            ->itemLabel(
+                                fn($state, Component $livewire) => $state ? ucwords($livewire->employees[$state['employee_id']] ?? '')  : ''
+                            )
                             ->schema([
                                 Select::make('employee_id')
-                                    ->options(Employee::pluck('name', 'id'))
+                                    ->options(fn(Component $livewire) => $livewire->employees)
                                     ->label(__('global.employee'))
                                     ->live()
                                     ->disabled()
+                                    ->dehydrated()
                                     ->required(),
                                 Select::make('employee_salary_structure_id')
                                     ->options(
@@ -135,9 +144,10 @@ class PayrollResource extends Resource
                                     ->preload()
                                     ->required()
                             ])
+                            ->columns(2)
+                            ->collapsible()
                             ->addable(false)
                             ->distinct()
-                            ->columns(2)
                     ])
 
             ]);
@@ -147,12 +157,14 @@ class PayrollResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('employee.name')
-                    ->label(__('global.employee'))
+                TextColumn::make('branch.name')
+                    ->label(__('global.branch'))
                     ->searchable(),
-                TextColumn::make('period')
-                    ->date('M-Y')
-                    ->label(__('global.period')),
+                TextColumn::make('month')
+                    ->state(fn(Payroll $record) => DateHelper::$months[$record->month])
+                    ->label(__('global.month')),
+                TextColumn::make('year')
+                    ->label(__('global.year')),
             ])
             ->filters([
                 //

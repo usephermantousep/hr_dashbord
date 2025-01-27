@@ -12,4 +12,5 @@ class CreatePayroll extends CreateRecord
     protected static bool $canCreateAnother = false;
 
     public array $employeeSalaryStructures = [];
+    public array $employees = [];
 }

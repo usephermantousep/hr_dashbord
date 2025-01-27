@@ -16,10 +16,14 @@ return new class extends Migration
             $table->foreignId('payroll_id')
                 ->references('id')
                 ->on('payrolls')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
             $table->foreignId('employee_id')
                 ->references('id')
                 ->on('employees')
+                ->onDelete('restrict');
+            $table->foreignId('employee_salary_structure_id')
+                ->references('id')
+                ->on('employee_salary_structures')
                 ->onDelete('restrict');
             $table->timestamps();
         });
