@@ -8,16 +8,20 @@ use App\Helper\DateHelper;
 use App\Models\Employee;
 use App\Models\EmployeeSalaryStructure;
 use App\Models\Payroll;
+use App\Models\SalaryComponent;
 use App\Models\SalaryStructure;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\Resource;
@@ -79,7 +83,7 @@ class PayrollResource extends Resource
             });
         })->toArray();
         $livewire->employeeSalaryStructures = [];
-        $livewire->employee = [];
+        $livewire->employees = [];
         $livewire->employeeSalaryStructures = $employeeSalaryStructures;
         $livewire->employees = Employee::whereIn('id', $employees)->pluck('name', 'id')->toArray();
         $set(__('global.employee'), []);
@@ -102,6 +106,7 @@ class PayrollResource extends Resource
                             ->afterStateUpdated(
                                 fn(Get $get, Set $set, Component $livewire) => self::afterStateUpdatedBranch($get, $set, $livewire)
                             )
+                            ->disabled(fn(Page $livewire) => $livewire instanceof EditRecord)
                             ->required(),
                         Select::make('year')
                             ->options(collect(DateHelper::$years)
@@ -120,7 +125,6 @@ class PayrollResource extends Resource
                 Section::make()
                     ->schema([
                         Repeater::make(__('global.employee'))
-                            ->grid(2)
                             ->relationship('payrollEmployees')
                             ->itemLabel(
                                 fn($state, Component $livewire) => $state ? ucwords($livewire->employees[$state['employee_id']] ?? '')  : ''
@@ -142,7 +146,86 @@ class PayrollResource extends Resource
                                     ->label(__('global.employee_salary_structure'))
                                     ->live()
                                     ->preload()
-                                    ->required()
+                                    ->afterStateUpdated(function (Get $get, Set $set) {
+                                        if (!$get('employee_salary_structure_id')) {
+                                            $set('earning', []);
+                                            $set('deduction', []);
+                                            return;
+                                        }
+                                        $employeeSalaryStructure = EmployeeSalaryStructure::findOrFail($get('employee_salary_structure_id'));
+                                        $salaryEarningComponents = $employeeSalaryStructure->employeeSalaryStructureEarnings;
+                                        $salaryDeductionComponents = $employeeSalaryStructure->employeeSalaryStructureDeductions;
+                                        $earningComponents = $salaryEarningComponents->map(function ($i) {
+                                            return [
+                                                'salary_component_id' => $i->salary_component_id,
+                                                'value' => $i->value,
+                                            ];
+                                        })->toArray();
+                                        $deductionComponents = $salaryDeductionComponents->map(function ($i) {
+                                            return [
+                                                'salary_component_id' => $i->salary_component_id,
+                                                'value' => $i->value,
+                                            ];
+                                        })->toArray();
+
+                                        $set('earning', $earningComponents);
+                                        $set('deduction', $deductionComponents);
+                                    })
+                                    ->required(),
+                                Tabs::make('Structure')
+                                    ->tabs([
+                                        Tab::make('earning_structure')
+                                            ->label(__('global.earning'))
+                                            ->schema([
+                                                Repeater::make('earning')
+                                                    ->label(__('global.earning'))
+                                                    ->relationship('payrollEmployeeStructureEarnings')
+                                                    ->collapsible()
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        Select::make('salary_component_id')
+                                                            ->relationship('salaryComponent', 'name', fn(Builder $query) => $query->where('type', 1))
+                                                            ->preload()
+                                                            ->label(__('global.salary_component'))
+                                                            ->searchable()
+                                                            ->required()
+                                                            ->native(false)
+                                                            ->dehydrated()
+                                                            ->distinct(),
+                                                        TextInput::make('value')
+                                                            ->numeric()
+                                                            ->required()
+                                                            ->label(__('global.value')),
+                                                    ])
+                                                    ->required()
+                                            ]),
+                                        Tab::make('deduction_structure')
+                                            ->label(__('global.deduction'))
+                                            ->schema([
+                                                Repeater::make('deduction')
+                                                    ->label(__('global.deduction'))
+                                                    ->relationship('payrollEmployeeStructureDeductions')
+                                                    ->collapsible()
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        Select::make('salary_component_id')
+                                                            ->relationship('salaryComponent', 'name', fn(Builder $query) => $query->where('type', 0))
+                                                            ->preload()
+                                                            ->label(__('global.salary_component'))
+                                                            ->searchable()
+                                                            ->required()
+                                                            ->native(false)
+                                                            ->dehydrated()
+                                                            ->distinct(),
+                                                        TextInput::make('value')
+                                                            ->numeric()
+                                                            ->required()
+                                                            ->label(__('global.value')),
+                                                    ])
+                                                    ->required()
+                                            ]),
+                                    ])
+                                    ->columnSpanFull()
                             ])
                             ->columns(2)
                             ->collapsible()

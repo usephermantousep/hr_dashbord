@@ -30,8 +30,24 @@ class PayrollEmployee extends Model
         return $this->belongsTo(EmployeeSalaryStructure::class);
     }
 
-    public function payrollEmployeeStructure(): HasMany
+    public function payrollEmployeeStructures(): HasMany
     {
         return $this->hasMany(PayrollEmployeeStructure::class);
+    }
+
+    public function payrollEmployeeStructureEarnings(): HasMany
+    {
+        return $this->hasMany(PayrollEmployeeStructure::class)
+            ->whereHas('salaryComponent', function ($query) {
+                $query->where('type', 1);
+            });
+    }
+
+    public function payrollEmployeeStructureDeductions(): HasMany
+    {
+        return $this->hasMany(PayrollEmployeeStructure::class)
+            ->whereHas('salaryComponent', function ($query) {
+                $query->where('type', 0);
+            });
     }
 }
